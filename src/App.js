@@ -25,16 +25,19 @@ function App() {
 
   //box
   const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const edges = new THREE.EdgesGeometry(geometry);
+  const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff }));
   const material = new THREE.MeshBasicMaterial({ color: 0x00333366 });
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
+  scene.add(line)
 
   // controls
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener('change', animate);
   controls.minDistance = 5;
   controls.maxDistance = 50;
-  controls.enablePan = false;
+  controls.enablePan = true;
 
   function animate() {
     requestAnimationFrame(animate);
