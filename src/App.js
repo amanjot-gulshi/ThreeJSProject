@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from './OrbitControls';
+import { TransformControls } from './TransformControls.js';
 
 function App() {
   //colors
@@ -36,7 +37,7 @@ function App() {
   const material = new THREE.MeshBasicMaterial({ color: BLUE });
   const cube = new THREE.Mesh(geometry, material);
   scene.add(cube);
-  scene.add(line);
+  // scene.add(line);
 
   //table
   const tableGeometry = new THREE.BoxGeometry(10, 0.1, 10,);
@@ -58,15 +59,24 @@ function App() {
   scene.add(gridHelper);
 
   // controls
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener('change', animate);
-  controls.minDistance = 5;
-  controls.maxDistance = 50;
-  controls.enablePan = true;
+  const orbitControls = new OrbitControls(camera, renderer.domElement);
+  orbitControls.addEventListener('change', animate);
+
+  const transformControls = new TransformControls(camera, renderer.domElement);
+  transformControls.size = .75;
+  transformControls.showX = false;
+  transformControls.space = 'world';
+  transformControls.attach(cube);
+  scene.add(transformControls);
+
+  transformControls.addEventListener('mouseDown', () => orbitControls.enabled = false);
+  transformControls.addEventListener('mouseUp', () => orbitControls.enabled = true);
+
 
   function animate() {
     requestAnimationFrame(animate);
 
+    // orbitControls.update();
     cubeCamera.update(renderer, scene)
 
     renderer.render(scene, camera);
