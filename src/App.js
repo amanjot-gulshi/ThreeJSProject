@@ -64,19 +64,33 @@ function App() {
 
   const transformControls = new TransformControls(camera, renderer.domElement);
   transformControls.size = .75;
-  transformControls.showX = false;
   transformControls.space = 'world';
   transformControls.attach(cube);
   scene.add(transformControls);
 
+
   transformControls.addEventListener('mouseDown', () => orbitControls.enabled = false);
   transformControls.addEventListener('mouseUp', () => orbitControls.enabled = true);
+
+  //window
+
+  window.addEventListener('keydown', function (event) {
+
+    switch (event.key) {
+      case 'w': // W
+        transformControls.setMode('translate');
+        break;
+
+      case 'e': // E
+        transformControls.setMode('rotate');
+        break;
+    }
+  });
 
 
   function animate() {
     requestAnimationFrame(animate);
 
-    // orbitControls.update();
     cubeCamera.update(renderer, scene)
 
     renderer.render(scene, camera);
